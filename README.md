@@ -29,7 +29,9 @@ npm install --save-dev prettier
 
 ---
 
-## 2. 주요 리액트 훅
+## 2. React Hooks 개요
+
+> [🔮 React Hooks 기초 - 자세히 보기](/hooks-detail.md)
 
 - **`useState`**: 각 인풋 필드의 상태를 저장하기 위해 사용
 - **`useActionState`**: 제출 시 비동기 처리 (1.5초 delay) + 버튼 상태 제어
@@ -56,7 +58,7 @@ npm install --save-dev prettier
 - useContext, createContext, useState를 이용해서 테마 관리
 
 <details>
-<summary>🧠궁금한 점</summary>
+<summary>🧠 궁금한 점</summary>
 <div markdown="1">
 
   > **"왜 ThemeContext는 components가 아니라 context 폴더에 보관될까?"**
@@ -76,5 +78,3 @@ npm install --save-dev prettier
 
 - React 앱의 진입점
 - DOM에 React 앱을 마운트(붙이는 역할)
-
-### [🔎 Hooks 자세히 보기](/hooks-detail.md)
