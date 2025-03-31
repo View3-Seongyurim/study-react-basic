@@ -55,6 +55,19 @@ npm install --save-dev prettier
 - 다크모드 토글을 위한 Context API 사용
 - useContext, createContext, useState를 이용해서 테마 관리
 
+<details>
+<summary>🧠궁금한 점</summary>
+<div markdown="1">
+
+  > **"왜 ThemeContext는 components가 아니라 context 폴더에 보관될까?"**
+  - UI 요소를 보관해두는 components와 달리, ThemeContext는 상태를 생성하고 제공(`Provider`)하는 유틸성 로직이기 때문
+  - 목적: 렌더링 NO 전역상태 관리 YES
+  - 즉 context에는 **전역으로 모든 컴포넌트에서 공유되어야 하는 상태나 기능**이 포함됨
+  - 이 폴더에 포함되는 다른 요소들: `theme`, `auth`, `modal`, ...
+
+</div>
+</details>
+
 ### 📁 src/App.jsx
 
 - 위 두 컴포넌트를 조립해서 화면 구성
