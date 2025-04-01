@@ -70,7 +70,7 @@ useEffect(() => {
 ### 2.3 유의사항
 
 - `useRef`는 변경 시 리렌더링되지 않음
-- 따라서 useRef는 리렌터링 없이 값을 저장하거나 DOM을 조작할 때에만 사용
+- 따라서 useRef는 리렌더링 없이 값을 저장하거나 DOM을 조작할 때에만 사용
 
 ---
 
@@ -223,19 +223,18 @@ const ThemeContext = createContext()
 
 - 이렇게 해야 그 안쪽 컴포넌트들이 `useContext`로 값을 꺼낼 수 있음
 
-#### 5.2.5 커스텀 훅을 만들어서 더 깔끔하게 쓰기
+#### 5.2.5 커스텀 훅 만들기
 
 ```javascript
 export function useTheme() {
   return useContext(ThemeContext)
 }
-
-const { dark, toggleTheme } = useTheme()
 ```
 
 #### 5.2.6 하위 컴포넌트에서 상태 꺼내 쓰기
 
 ```javascript
+import { useTheme } from '../context/ThemeContext'
 const { dark, toggleTheme } = useTheme()
 ```
 
