@@ -4,6 +4,10 @@
 
 ### 1.1 개요
 
+```javascript
+const [state, setState] = useState(initialState)
+```
+
 - **용도**: 상태 저장 및 세팅
 
 ### 1.2 활용
@@ -28,6 +32,10 @@ const [name, setName] = useState('')
 ## 2️⃣ `useRef`
 
 ### 2.1 개요
+
+```javascript
+const myRef = useRef(null)
+```
 
 - **용도**: DOM 요소에 직접 접근하여 조작
 
@@ -70,6 +78,12 @@ useEffect(() => {
 
 ### 3.1 개요
 
+```javascript
+useEffect(() => {
+  //부수효과 처리
+}, [dependency])
+```
+
 - **용도**: 컴포넌트의 사이드 이펙트 처리
 - **실행시점**: 리액트 컴포넌트가 렌더링되고 난 후
 - **[ ]**: 의존성 배열(비어 있으면 최초 한 번만 실행)
@@ -96,6 +110,10 @@ useEffect(() => {
 ## 4️⃣ `useReducer`
 
 ### 4.1 개요
+
+```javascript
+const [state, dispatch] = useReducer(reducer, initialState)
+```
 
 - **용도**: 상태 전환 로직이 복잡할 경우 구조화해서 관리
 
@@ -156,6 +174,10 @@ function reducer(state, action) {
 ## 5️⃣ `useContext`
 
 ### 5.1 개요
+
+```javascript
+const value = useContext(MyContext)
+```
 
 - **용도**: 전역 상태(테마, 로그인, 인증 등) 공유
 - **정의**: props 없이도 전역 상태를 꺼내 쓸 수 있게 해주는 리액트의 공유 시스템
@@ -229,7 +251,14 @@ const { dark, toggleTheme } = useTheme()
 
 ### 6.1 개요
 
-- **용도**: 비동기 액션 & 로딩 상태 관리를 한 번에 처리
+```javascript
+const [result, submitAction, isPending] = useActionState(async (prevState, formData) => {
+  // 비동기 작업
+  return resultValue
+}, initialState)
+```
+
+- **용도**: 상태 & 비동기 액션 & 로딩 상태를 한 번에 관리
 - **도입**: React 19 (2024-12-05)
 
 <details>
@@ -309,14 +338,13 @@ submitForm({ name, contact, region })
 
 ### 7.1 개요
 
+```javascript
+useCallback(fn, [dependency, ...])
+```
 
 - **용도**: 컴포넌트가 렌더링될 때 동일한 함수가 매번 새로 생성되는 것을 막기 위한 최적화
 
 #### 7.1.1 `useCallback`이 필요한 이유
-
-```javascript
-useCallback(fn, [dependency, ...])
-```
 
 - 리액트에서 함수는 기본적으로 매 렌더링마다 새로운 함수로 취급됨
   - 그렇게 되면?
@@ -362,6 +390,51 @@ const handleSubmit = useCallback(
 
 ### 8.1 개요
 
-- **용도**
+```javascript
+const memoizedValue = useMemo(() => {
+  return someHeavyCalculation(props.x)
+}, [props.x])
+```
+
+- **용도**: 값을 기억하여 불필요한 재계산 방지 및 성능 최적화
+- **필요한 이유**:
+  - 리액트 컴포넌트는 상태나 props가 바뀌면 안에 있는 함수나 계산식도 모두 다시 실행됨
+  - 그런데 시간이 오래 걸리는 어떤 복잡한 계산이 있다면? 성능 낭비 야기
+  - 이 경우 `useMemo`를 사용하면 리액트가 계산된 값을 기억해뒀다가 재사용할 수 있게 해줌
+
 
 ### 8.2 활용
+
+```javascript
+const summary = useMemo(() => {
+  if (!submittedForm) return ''
+  return (
+    <>
+      ・ 이름: {submittedForm.name}<br>
+      ・ 연락처: {submittedForm.contact}<br>
+      ・ 희망지역: {submittedForm.region.trim() ? submittedForm.region : '미지정'}
+    </>
+  )
+}, [submittedForm])
+```
+
+- `submittedForm`이 바뀔 때에만 `summary`를 다시 계산
+- 그 외엔 계산된 결과를 재사용
+- 즉, 문의 완료 메세지를 리렌더링할 때 불필요하게 다시 계산하지 않도록 하는 최적화
+
+### 8.3 언제 쓰면 좋을까?
+
+- 복잡한 계산 결과를 캐싱하고 싶을 때
+- 객체나 배열이 렌더링마다 새로 만들어져서 자식 컴포넌트가 불필요하게 리렌더링될 때
+- 굳이 필요 없는 경우: 간단한 텍스트 연산 같은 경우
+
+### 8.4 `useMemo` vs `useCallback`
+
+- 공통점: 메모이제이션 기능
+- 차이점:
+
+| 항목      | `useMemo`                             | `useCallback`                          |
+|-----------|---------------------------------------|----------------------------------------|
+| 기억 대상 | **값(계산 결과)**                      | **함수**                               |
+| 언제 쓰나 | 복잡한 계산 결과를 기억해두고 재사용할 때 | 함수가 재생성되는 걸 막고 싶을 때         |
+| 목적     | 계산 성능 최적화                         | 렌더링 최적화 / 불필요한 함수 재생성 방지 |
