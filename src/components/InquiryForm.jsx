@@ -82,7 +82,7 @@ export default function InquiryForm() {
     <div className="form-wrapper">
       <div className="head">
         <h2 className="title">
-          <a href="/">가맹문의</a>
+          <a href="/study-react-basic/">가맹문의</a>
         </h2>
         <button className="btn-theme users-input btns" onClick={toggleTheme}>
           {dark ? 'LIGHT MODE' : 'DARK MODE'}
