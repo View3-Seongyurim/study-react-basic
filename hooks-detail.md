@@ -17,11 +17,7 @@ const [name, setName] = useState('')
 ```
 
 ```html
-<input
-  value="{name}"
-  onChange="{(e) => setName(e.target.value)}"
-  placeholder="이름"
-/>
+<input value="{name}" onChange="{(e) => setName(e.target.value)}" placeholder="이름" />
 ```
 
 - 사용자 입력이 바뀔 때마다 `setName()`으로 상태 업데이트
@@ -149,9 +145,12 @@ function reducer(state, action) {
         nameError: action.payload.name ? '' : '이름을 입력해주세요.',
         contactError: /^\d{10,11}$/.test(action.payload.contact)
           ? ''
-          : '연락처 형식이 올바르지 않습니다.',
+          : '연락처를 입력해주세요. (10~11 숫자만)',
       }
-    ...
+    case 'RESET':
+      return initialState
+    default:
+      return state
   }
 }
 ```
@@ -163,7 +162,9 @@ function reducer(state, action) {
 #### 4.2.4 JSX에서 갱신된 errors 상태 활용
 
 ```javascript
-{errors.nameError && <p>{errors.nameError}</p>}
+{
+  errors.nameError && <p>{errors.nameError}</p>
+}
 ```
 
 - 상태가 바뀌었기 때문에 컴포넌트가 다시 렌더링됨
@@ -205,9 +206,7 @@ const ThemeContext = createContext()
 #### 5.2.3 `<Provider>`로 공유할 값을 정의해주기
 
 ```html
-<ThemeContext.Provider value={{ dark, toggleTheme }}>
-  {children}
-</ThemeContext.Provider>
+<ThemeContext.Provider value="{{" dark, toggleTheme }}> {children} </ThemeContext.Provider>
 ```
 
 - `value`로 넘긴 값을 하위 컴포넌트 어디서든 꺼내 쓸 수 있게 됨
@@ -264,30 +263,30 @@ const [result, submitAction, isPending] = useActionState(async (prevState, formD
 <summary>🧠 궁금한 점</summary>
 <div markdown="1">
 
-  > **"그렇다면 React 19 전에는 어땠을까?"**
-  
-  ```javascript
-  const [state, setState] = useState(null)
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState(null)
+> **"그렇다면 React 19 전에는 어땠을까?"**
 
-  const handleSubmit = async (formData) => {
-    setIsLoading(true)
-    setError(null)
+```javascript
+const [state, setState] = useState(null)
+const [isLoading, setIsLoading] = useState(false)
+const [error, setError] = useState(null)
 
-    try {
-      const result = await submitForm(formData)
-      setState(result)
-    } catch (err) {
-      setError(err)
-    } finally {
-      setIsLoading(false)
-    }
+const handleSubmit = async (formData) => {
+  setIsLoading(true)
+  setError(null)
+
+  try {
+    const result = await submitForm(formData)
+    setState(result)
+  } catch (err) {
+    setError(err)
+  } finally {
+    setIsLoading(false)
   }
-  ```
+}
+```
 
-  - 상태가 여러 개로 분산됨: `state`, `isLoading`, `error`
-  - useActionState는 이 상태들을 하나의 흐름으로 묶어주는 역할을 하는 것
+- 상태가 여러 개로 분산됨: `state`, `isLoading`, `error`
+- useActionState는 이 상태들을 하나의 흐름으로 묶어주는 역할을 하는 것
 
 </div>
 </details>
@@ -401,7 +400,6 @@ const memoizedValue = useMemo(() => {
   - 그런데 시간이 오래 걸리는 어떤 복잡한 계산이 있다면? 성능 낭비 야기
   - 이 경우 `useMemo`를 사용하면 리액트가 계산된 값을 기억해뒀다가 재사용할 수 있게 해줌
 
-
 ### 8.2 활용
 
 ```javascript
@@ -432,8 +430,8 @@ const summary = useMemo(() => {
 - 공통점: 메모이제이션 기능
 - 차이점:
 
-| 항목      | `useMemo`                             | `useCallback`                          |
-|-----------|---------------------------------------|----------------------------------------|
-| 기억 대상 | **값(계산 결과)**                      | **함수**                               |
+| 항목      | `useMemo`                                 | `useCallback`                             |
+| --------- | ----------------------------------------- | ----------------------------------------- |
+| 기억 대상 | **값(계산 결과)**                         | **함수**                                  |
 | 언제 쓰나 | 복잡한 계산 결과를 기억해두고 재사용할 때 | 함수가 재생성되는 걸 막고 싶을 때         |
-| 목적     | 계산 성능 최적화                         | 렌더링 최적화 / 불필요한 함수 재생성 방지 |
+| 목적      | 계산 성능 최적화                          | 렌더링 최적화 / 불필요한 함수 재생성 방지 |
