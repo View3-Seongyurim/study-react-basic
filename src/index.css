@@ -64,10 +64,11 @@ select {
   display: block;
   width: 100%;
   padding: 15px;
-  font-size: 1em;
   border: 1px solid var(--gray);
-  box-sizing: border-box;
   border-radius: 5px;
+  box-sizing: border-box;
+  background-color: #fff;
+  font-size: 1em;
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
