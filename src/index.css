@@ -68,6 +68,9 @@ select {
   border: 1px solid var(--gray);
   box-sizing: border-box;
   border-radius: 5px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
 }
 
 em {

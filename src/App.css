@@ -23,7 +23,7 @@
 }
 .form-wrapper {
   width: 400px;
-  padding: 150px 0;
+  padding: 150px 30px;
 }
 .btns {
   background-color: var(--black);
